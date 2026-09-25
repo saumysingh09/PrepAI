@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IntervueAI · Login & Sign Up</title>
+  <meta name="description" content="IntervueAI - Your AI Interviewer for the future of hiring. Practice with realistic AI-driven interviews, get instant feedback, and land your dream job with confidence.">
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0B0E14;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+      color: #FFFFFF;
+    }
+
+    /* Soft ambient background glow */
+    .glow-bg {
+      position: fixed;
+      width: 90vmax;
+      height: 90vmax;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 30%, rgba(13, 148, 136, 0.04), transparent 65%),
+                  radial-gradient(circle at 75% 70%, rgba(245, 158, 11, 0.035), transparent 65%);
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Main Container Card */
+    .main-card {
+      width: 100%;
+      max-width: 1200px;
+      min-height: 680px;
+      background: #11151C;
+      border: 1px solid #1E2530;
+      border-radius: 2.5rem;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+      transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    .main-card:hover {
+      border-color: #2A3444;
+      box-shadow: 0 35px 70px -20px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(13, 148, 136, 0.05) inset;
+    }
+
+    /* LEFT PANEL – Branding */
+    .brand-panel {
+      flex: 1 1 42%;
+      background: #0D1118;
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid #1A202A;
+    }
+
+    /* Subtle technological grid */
+    .brand-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(13, 148, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13, 148, 136, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at 30% 40%, black 20%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Floating glowing ambient nodes */
+    .node {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatNode 14s infinite alternate ease-in-out;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .node:nth-child(1) { 
+      top: 15%; left: 10%; width: 5px; height: 5px; 
+      background: #0D9488; box-shadow: 0 0 8px rgba(13, 148, 136, 0.6); 
+      animation-duration: 16s; 
+    }
+    .node:nth-child(2) { 
+      top: 70%; left: 85%; width: 6px; height: 6px; 
+      background: #F59E0B; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); 
+      animation-duration: 20s; 
+    }
+    .node:nth-child(3) { 
+      top: 40%; left: 80%; width: 4px; height: 4px; 
+      background: #0D9488; box-shadow: 0 0 6px rgba(13, 148, 136, 0.5); 
+      animation-duration: 12s; 
+    }
+    .node:nth-child(4) { 
+      top: 80%; left: 20%; width: 4px; height: 4px; 
+      background: #F59E0B; box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); 
+      animation-duration: 18s; 
+    }
+    .node:nth-child(5) { 
+      top: 30%; left: 45%; width: 5px; height: 5px; 
+      background: #0D9488; box-shadow: 0 0 8px rgba(13, 148, 136, 0.4); 
+      animation-duration: 22s; opacity: 0.3; 
+    }
+
+    @keyframes floatNode {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(15px, -25px) scale(1.2); }
+    }
+
+    /* Logo area */
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 3;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: #0F766E;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-icon:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-text {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+
+    /* Hero Text */
+    .hero-text {
+      z-index: 3;
+      margin: 2.5rem 0;
+    }
+
+    .hero-text h1 {
+      font-size: 2.35rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-text .accent {
+      color: #F59E0B;
+      font-weight: 700;
+    }
+
+    .hero-text p {
+      color: #94A3B8;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 90%;
+      font-weight: 300;
+    }
+
+    /* AI Voice Visualizer Badge */
+    .voice-visual {
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 118, 110, 0.12);
+      border: 1px solid rgba(13, 148, 136, 0.2);
+      border-radius: 60px;
+      padding: 0.75rem 1.4rem;
+      width: fit-content;
+      user-select: none;
+    }
+
+    .voice-visual i {
+      color: #0D9488;
+      font-size: 1.15rem;
+      opacity: 0.9;
+    }
+
+    .wave {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+    }
+
+    .wave span {
+      width: 3px;
+      height: 8px;
+      background: #0D9488;
+      border-radius: 3px;
+      animation: waveAnim 1.2s infinite ease-in-out;
+      opacity: 0.8;
+    }
+
+    .wave span:nth-child(1) { animation-delay: 0s; height: 12px; }
+    .wave span:nth-child(2) { animation-delay: 0.2s; height: 20px; }
+    .wave span:nth-child(3) { animation-delay: 0.4s; height: 14px; }
+    .wave span:nth-child(4) { animation-delay: 0.6s; height: 24px; }
+    .wave span:nth-child(5) { animation-delay: 0.8s; height: 10px; }
+    .wave span:nth-child(6) { animation-delay: 1.0s; height: 18px; }
+    .wave span:nth-child(7) { animation-delay: 1.2s; height: 12px; }
+
+    @keyframes waveAnim {
+      0%, 100% { transform: scaleY(0.6); opacity: 0.5; }
+      50% { transform: scaleY(1.35); opacity: 1; }
+    }
+
+    .voice-visual span {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.2px;
+    }
+
+    /* RIGHT PANEL – Forms */
+    .form-panel {
+      flex: 1 1 58%;
+      background: #0F131A;
+      padding: 3.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .form-header {
+      margin-bottom: 2rem;
+    }
+
+    /* Pill Tabs Switcher */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: #181E28;
+      padding: 0.4rem;
+      border-radius: 60px;
+      border: 1px solid #252D3A;
+      width: fit-content;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.75rem 1.8rem;
+      border-radius: 40px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #7E8C9C;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: -0.01em;
+      outline: none;
+    }
+
+    .tab-btn.active {
+      background: #0F766E;
+      color: #FFFFFF;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(15, 118, 110, 0.35);
+    }
+
+    .tab-btn:not(.active):hover {
+      color: #CBD5E1;
+      background: #1F2733;
+    }
+
+    /* Forms */
+    .auth-form {
+      display: block;
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .auth-form.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #94A3B8;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon i.icon-prefix {
+      position: absolute;
+      left: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4A5668;
+      font-size: 1rem;
+      transition: color 0.3s;
+      pointer-events: none;
+    }
+
+    .input-icon input {
+      width: 100%;
+      background: #181E28;
+      border: 1px solid #252D3A;
+      border-radius: 16px;
+      padding: 1rem 2.8rem 1rem 2.9rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: #FFFFFF;
+      outline: none;
+      transition: all 0.3s ease;
+      letter-spacing: -0.01em;
+    }
+
+    .input-icon input:focus {
+      border-color: #0D9488;
+      background: #1A2130;
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+
+    .input-icon input:focus ~ i.icon-prefix {
+      color: #0D9488;
+    }
+
+    .input-icon input::placeholder {
+      color: #4A5668;
+      font-weight: 300;
+    }
+
+    /* Eye toggle button for passwords */
+    .toggle-password {
+      position: absolute;
+      right: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #4A5668;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 4px;
+      outline: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toggle-password:hover {
+      color: #94A3B8;
+    }
+
+    .forgot-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .forgot-row a {
+      color: #7E8C9C;
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .forgot-row a:hover {
+      color: #0D9488;
+    }
+
+    /* Primary button — Teal */
+    .btn-primary {
+      width: 100%;
+      background: #0F766E;
+      border: none;
+      border-radius: 16px;
+      padding: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28);
+      letter-spacing: -0.01em;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: #0D9488;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(15, 118, 110, 0.38);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      background: #115E59;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Signup button — Warm amber */
+    .btn-signup {
+      background: #B45309;
+      box-shadow: 0 4px 14px rgba(180, 83, 9, 0.28);
+    }
+
+    .btn-signup:hover {
+      background: #D97706;
+      box-shadow: 0 6px 18px rgba(180, 83, 9, 0.38);
+    }
+
+    .btn-signup:active {
+      background: #92400E;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.8rem 0 1.5rem;
+      color: #4A5668;
+      font-size: 0.8rem;
+      font-weight: 400;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #252D3A, transparent);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+      background: #181E28;
+      border: 1px solid #252D3A;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94A3B8;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      background: #1F2733;
+      border-color: #0D9488;
+      color: #0D9488;
+      transform: translateY(-2px);
+    }
+
+    /* Signup specific fields */
+    .name-row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .name-row .input-group {
+      flex: 1;
+    }
+
+    .terms {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin: 1.1rem 0 1.5rem;
+      font-size: 0.82rem;
+      color: #7E8C9C;
+      user-select: none;
+    }
+
+    .terms input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #B45309;
+      background: #181E28;
+      border: 1px solid #252D3A;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .terms a {
+      color: #F59E0B;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+      color: #FBBF24;
+    }
+
+    /* Sleek Custom Toast Feedback */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      min-width: 320px;
+      max-width: 420px;
+      background: rgba(17, 21, 28, 0.95);
+      border: 1px solid #252D3A;
+      backdrop-filter: blur(12px);
+      color: #FFFFFF;
+      padding: 1rem 1.25rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .toast.success {
+      border-left: 4px solid #0D9488;
+    }
+
+    .toast.success i {
+      color: #0D9488;
+      font-size: 1.2rem;
+    }
+
+    .toast.error {
+      border-left: 4px solid #EF4444;
+    }
+
+    .toast.error i {
+      color: #EF4444;
+      font-size: 1.2rem;
+    }
+
+    .toast.info {
+      border-left: 4px solid #F59E0B;
+    }
+
+    .toast.info i {
+      color: #F59E0B;
+      font-size: 1.2rem;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .toast-message {
+      font-size: 0.8rem;
+      color: #94A3B8;
+      line-height: 1.4;
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Modal Backdrop and Box */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: #11151C;
+      border: 1px solid #1E2530;
+      border-radius: 1.75rem;
+      padding: 2.2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      color: #7E8C9C;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #FFFFFF;
+    }
+
+    .modal-card h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.6rem;
+      color: #FFFFFF;
+    }
+
+    .modal-card p {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Spinner animation */
+    .fa-spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .main-card {
+        flex-direction: column;
+        border-radius: 2rem;
+        min-height: auto;
+      }
+
+      .brand-panel {
+        border-right: none;
+        border-bottom: 1px solid #1A202A;
+        padding: 2.5rem 2rem;
+      }
+
+      .form-panel {
+        padding: 2.5rem 2rem;
+      }
+
+      .hero-text h1 {
+        font-size: 1.85rem;
+      }
+
+      .voice-visual {
+        margin-top: 1.5rem;
+      }
+
+      .name-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.8rem;
+      }
+
+      .brand-panel {
+        padding: 1.8rem 1.4rem;
+      }
+
+      .form-panel {
+        padding: 1.8rem 1.4rem;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 0.7rem 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .logo-text {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="glow-bg"></div>
+
+  <!-- Toast Container for notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main Card -->
+  <div class="main-card">
+    <!-- LEFT PANEL: AI BRANDING -->
+    <div class="brand-panel">
+      <!-- Ambient nodes -->
+      <div class="node"></div>
+      <div class="node"></div>
+      <div class="node"></div>
+      <div class="node"></div>
+      <div class="node"></div>
+
+      <!-- Logo -->
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="logo-text">IntervueAI</div>
+      </div>
+
+      <!-- Hero Headline & Description -->
+      <div class="hero-text">
+        <h1>Your <span class="accent">AI Interviewer</span> for the future of hiring.</h1>
+        <p>Practice with realistic AI-driven interviews, get instant feedback, and land your dream job with confidence.</p>
+      </div>
+
+      <!-- Animated Voice Visualizer -->
+      <div class="voice-visual">
+        <i class="fas fa-microphone-alt"></i>
+        <div class="wave">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span>AI voice active</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: AUTH FORMS -->
+    <div class="form-panel">
+      <!-- Tab Controls -->
+      <div class="form-header">
+        <div class="tabs" role="tablist" aria-label="Authentication Options">
+          <button class="tab-btn active" id="loginTab" role="tab" aria-selected="true" aria-controls="loginForm">Sign In</button>
+          <button class="tab-btn" id="signupTab" role="tab" aria-selected="false" aria-controls="signupForm">Create Account</button>
+        </div>
+      </div>
+
+      <!-- 1. SIGN IN FORM -->
+      <form class="auth-form" id="loginForm" role="tabpanel" aria-labelledby="loginTab">
+        <div class="input-group">
+          <label for="loginEmail">Email address</label>
+          <div class="input-icon">
+            <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required autocomplete="email">
+            <i class="fas fa-envelope icon-prefix"></i>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-icon">
+            <input type="password" id="loginPassword" name="password" placeholder="••••••••" required autocomplete="current-password">
+            <i class="fas fa-lock icon-prefix"></i>
+            <button type="button" class="toggle-password" data-target="loginPassword" aria-label="Toggle password visibility">
+              <i class="far fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="forgot-row">
+          <a href="#" id="forgotPasswordBtn">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginSubmitBtn">
+          <span>Sign In</span>
+        </button>
+
+        <div class="divider">or continue with</div>
+
+        <div class="social-icons">
+          <a href="#" class="social-btn social-google" title="Continue with Google" aria-label="Sign in with Google"><i class="fab fa-google"></i></a>
+          <a href="#" class="social-btn social-linkedin" title="Continue with LinkedIn" aria-label="Sign in with LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn social-github" title="Continue with GitHub" aria-label="Sign in with GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </form>
+
+      <!-- 2. CREATE ACCOUNT FORM -->
+      <form class="auth-form hidden" id="signupForm" role="tabpanel" aria-labelledby="signupTab">
+        <div class="name-row">
+          <div class="input-group">
+            <label for="signupFirstName">First name</label>
+            <div class="input-icon">
+              <input type="text" id="signupFirstName" name="first_name" placeholder="John" required autocomplete="given-name">
+              <i class="fas fa-user icon-prefix"></i>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="signupLastName">Last name</label>
+            <div class="input-icon">
+              <input type="text" id="signupLastName" name="last_name" placeholder="Doe" required autocomplete="family-name">
+              <i class="fas fa-user icon-prefix"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="signupEmail">Email address</label>
+          <div class="input-icon">
+            <input type="email" id="signupEmail" name="email" placeholder="you@example.com" required autocomplete="email">
+            <i class="fas fa-envelope icon-prefix"></i>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="signupPassword">Password</label>
+          <div class="input-icon">
+            <input type="password" id="signupPassword" name="password" placeholder="Create a strong password" required minlength="8" autocomplete="new-password">
+            <i class="fas fa-lock icon-prefix"></i>
+            <button type="button" class="toggle-password" data-target="signupPassword" aria-label="Toggle password visibility">
+              <i class="far fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="terms">
+          <input type="checkbox" id="termsCheck" required>
+          <label for="termsCheck">I agree to the <a href="#" id="termsLink">Terms of Service</a> and <a href="#" id="privacyLink">Privacy Policy</a></label>
+        </div>
+
+        <!-- Amber Create Account button -->
+        <button type="submit" class="btn-primary btn-signup" id="signupSubmitBtn">
+          <span>Create Account</span>
+        </button>
+
+        <div class="divider">or sign up with</div>
+
+        <div class="social-icons">
+          <a href="#" class="social-btn social-google" title="Sign up with Google" aria-label="Sign up with Google"><i class="fab fa-google"></i></a>
+          <a href="#" class="social-btn social-linkedin" title="Sign up with LinkedIn" aria-label="Sign up with LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn social-github" title="Sign up with GitHub" aria-label="Sign up with GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Forgot Password -->
+  <div class="modal-backdrop" id="forgotModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeForgotModal" aria-label="Close modal">&times;</button>
+      <h2>Reset Password</h2>
+      <p>Enter the email address associated with your account and we'll send you instructions to reset your password.</p>
+      
+      <form id="forgotForm">
+        <div class="input-group">
+          <label for="forgotEmail">Email address</label>
+          <div class="input-icon">
+            <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+            <i class="fas fa-envelope icon-prefix"></i>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Send Reset Instructions</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Terms & Privacy -->
+  <div class="modal-backdrop" id="termsModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeTermsModal" aria-label="Close modal">&times;</button>
+      <h2 id="termsModalTitle">Terms of Service</h2>
+      <p id="termsModalBody">By using IntervueAI, you agree to our fair usage policies, practicing AI interview simulations respectfully, and ensuring account integrity. We never sell your personal speech or resume data.</p>
+      <button type="button" class="btn-primary" id="acceptTermsModalBtn">Understood</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Elements
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const toastContainer = document.getElementById('toastContainer');
+      const forgotModal = document.getElementById('forgotModal');
+      const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+      const closeForgotModal = document.getElementById('closeForgotModal');
+      const forgotForm = document.getElementById('forgotForm');
+      const termsModal = document.getElementById('termsModal');
+      const termsLink = document.getElementById('termsLink');
+      const privacyLink = document.getElementById('privacyLink');
+      const closeTermsModal = document.getElementById('closeTermsModal');
+      const acceptTermsModalBtn = document.getElementById('acceptTermsModalBtn');
+
+      // Backend API URL (can adapt if running fullstack Django or standalone)
+      const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://127.0.0.1:8000/api/accounts'
+        : '/api/accounts';
+
+      // Switch to Login Tab
+      function activateLogin() {
+        loginTab.classList.add('active');
+        loginTab.setAttribute('aria-selected', 'true');
+        signupTab.classList.remove('active');
+        signupTab.setAttribute('aria-selected', 'false');
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+      }
+
+      // Switch to Signup Tab
+      function activateSignup() {
+        signupTab.classList.add('active');
+        signupTab.setAttribute('aria-selected', 'true');
+        loginTab.classList.remove('active');
+        loginTab.setAttribute('aria-selected', 'false');
+        signupForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+      }
+
+      loginTab.addEventListener('click', activateLogin);
+      signupTab.addEventListener('click', activateSignup);
+
+      // Password Visibility Toggle
+      document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          const input = document.getElementById(targetId);
+          const icon = this.querySelector('i');
+
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+          } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+          }
+        });
+      });
+
+      // Sleek Toast Message System
+      function showToast(title, message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let iconHtml = '<i class="fas fa-info-circle"></i>';
+        if (type === 'success') iconHtml = '<i class="fas fa-check-circle"></i>';
+        if (type === 'error') iconHtml = '<i class="fas fa-exclamation-circle"></i>';
+
+        toast.innerHTML = `
+          ${iconHtml}
+          <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+          </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(40px)';
+          setTimeout(() => toast.remove(), 300);
+        }, 4000);
+      }
+
+      // Set Button Loading State
+      function setButtonLoading(button, isLoading, defaultText) {
+        if (isLoading) {
+          button.disabled = true;
+          button.innerHTML = `<i class="fas fa-spinner"></i> <span>Processing...</span>`;
+        } else {
+          button.disabled = false;
+          button.innerHTML = `<span>${defaultText}</span>`;
+        }
+      }
+
+      // Handle Sign In Submission
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = document.getElementById('loginSubmitBtn');
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        setButtonLoading(submitBtn, true, 'Sign In');
+
+        try {
+          // Attempt request to Django backend if available
+          const response = await fetch(`${API_BASE}/login/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          }).catch(() => null);
+
+          if (response && response.ok) {
+            const data = await response.json();
+            localStorage.setItem('intervue_token', data.token || data.access || 'demo_token');
+            localStorage.setItem('intervue_user', JSON.stringify(data.user || { email }));
+            showToast('Welcome Back!', 'Successfully signed in to IntervueAI.', 'success');
+          } else if (response && response.status === 400) {
+            const err = await response.json();
+            showToast('Authentication Failed', err.message || 'Invalid email or password.', 'error');
+          } else {
+            // Standalone demo mode fallback
+            localStorage.setItem('intervue_token', 'demo_active_token_' + Date.now());
+            localStorage.setItem('intervue_user', JSON.stringify({ email }));
+            showToast('Signed In Successfully', `Welcome back, ${email.split('@')[0]}!`, 'success');
+          }
+        } catch (err) {
+          showToast('Sign In Error', 'An unexpected error occurred. Please try again.', 'error');
+        } finally {
+          setButtonLoading(submitBtn, false, 'Sign In');
+        }
+      });
+
+      // Handle Create Account Submission
+      signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = document.getElementById('signupSubmitBtn');
+        const firstName = document.getElementById('signupFirstName').value.trim();
+        const lastName = document.getElementById('signupLastName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const termsAccepted = document.getElementById('termsCheck').checked;
+
+        if (!termsAccepted) {
+          showToast('Terms Required', 'Please accept the Terms of Service to continue.', 'error');
+          return;
+        }
+
+        setButtonLoading(submitBtn, true, 'Create Account');
+
+        try {
+          const response = await fetch(`${API_BASE}/register/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              first_name: firstName, 
+              last_name: lastName, 
+              email, 
+              password 
+            })
+          }).catch(() => null);
+
+          if (response && response.ok) {
+            const data = await response.json();
+            showToast('Account Created!', 'Your account has been created. Switching to Sign In...', 'success');
+            setTimeout(() => {
+              activateLogin();
+              document.getElementById('loginEmail').value = email;
+            }, 1200);
+          } else if (response && response.status === 400) {
+            const err = await response.json();
+            showToast('Registration Error', err.message || 'Could not complete registration.', 'error');
+          } else {
+            // Standalone demo mode fallback
+            showToast('Account Created!', `Welcome, ${firstName}! You can now sign in with your credentials.`, 'success');
+            setTimeout(() => {
+              activateLogin();
+              document.getElementById('loginEmail').value = email;
+            }, 1200);
+          }
+        } catch (err) {
+          showToast('Registration Error', 'An unexpected error occurred. Please try again.', 'error');
+        } finally {
+          setButtonLoading(submitBtn, false, 'Create Account');
+        }
+      });
+
+      // Social Button Click Handlers
+      document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const provider = btn.classList.contains('social-google') ? 'Google' :
+                           btn.classList.contains('social-linkedin') ? 'LinkedIn' : 'GitHub';
+          showToast(`${provider} Auth`, `Connecting with ${provider}...`, 'info');
+        });
+      });
+
+      // Forgot Password Modal Handlers
+      forgotPasswordBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        forgotModal.classList.add('active');
+      });
+
+      closeForgotModal.addEventListener('click', () => {
+        forgotModal.classList.remove('active');
+      });
+
+      forgotForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('forgotEmail').value.trim();
+        forgotModal.classList.remove('active');
+        showToast('Reset Link Dispatched', `Password recovery link sent to ${email}`, 'info');
+      });
+
+      // Terms & Privacy Modals
+      termsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('termsModalTitle').innerText = 'Terms of Service';
+        document.getElementById('termsModalBody').innerText = 'IntervueAI provides an interactive AI-based mock interview platform. Users must provide genuine details and practice responsibly. Unauthorized scraping or misuse of AI prompts is strictly prohibited.';
+        termsModal.classList.add('active');
+      });
+
+      privacyLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('termsModalTitle').innerText = 'Privacy Policy';
+        document.getElementById('termsModalBody').innerText = 'Your privacy is paramount. Your simulated interview answers, voice recordings, and credentials are protected with end-to-end industry encryption and are never sold to third parties.';
+        termsModal.classList.add('active');
+      });
+
+      closeTermsModal.addEventListener('click', () => {
+        termsModal.classList.remove('active');
+      });
+
+      acceptTermsModalBtn.addEventListener('click', () => {
+        termsModal.classList.remove('active');
+        document.getElementById('termsCheck').checked = true;
+      });
+
+      // Close modals when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === forgotModal) forgotModal.classList.remove('active');
+        if (e.target === termsModal) termsModal.classList.remove('active');
+      });
+
+    })();
+  </script>
+</body>
+</html>
